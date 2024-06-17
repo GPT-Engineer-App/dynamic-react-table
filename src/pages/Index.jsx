@@ -1,17 +1,39 @@
-// Update this page (the content is just a fallback if you fail and example)
-// Use chakra-ui
-import { Container, Text, VStack } from "@chakra-ui/react";
-
-// Example of using react-icons
-// import { FaRocket } from "react-icons/fa";
-// <IconButton aria-label="Add" icon={<FaRocket />} size="lg" />; // IconButton would also have to be imported from chakra
+import { Container, Text, VStack, Input, Button } from "@chakra-ui/react";
+import { MaterialReactTable } from 'material-react-table';
+import { useState } from "react";
 
 const Index = () => {
+  const [file, setFile] = useState(null);
+  const [tableData, setTableData] = useState([]);
+  const [columns, setColumns] = useState([]);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("http://localhost:5000/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    if (data.length > 0) {
+      setColumns(Object.keys(data[0]).map((key) => ({ accessorKey: key, header: key })));
+      setTableData(data);
+    }
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <Text>Chat with the agent to start making edits.</Text>
+        <Text fontSize="2xl">Upload CSV and View Data</Text>
+        <Input type="file" onChange={handleFileChange} />
+        <Button onClick={handleUpload}>Upload</Button>
+        {tableData.length > 0 && <MaterialReactTable columns={columns} data={tableData} />}
       </VStack>
     </Container>
   );
