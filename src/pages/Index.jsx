@@ -1,5 +1,5 @@
 import { Container, Text, VStack, Input, Button } from "@chakra-ui/react";
-import MaterialReactTable from 'material-react-table';
+import { MaterialReactTable } from 'material-react-table';
 import { useState } from "react";
 
 const Index = () => {
