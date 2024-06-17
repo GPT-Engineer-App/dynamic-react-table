@@ -1,7 +1,6 @@
 import { Container, Text, VStack, Input, Button } from "@chakra-ui/react";
 import MaterialReactTable from 'material-react-table';
 import { useState } from "react";
-import MaterialReactTable from "material-react-table";
 
 const Index = () => {
   const [file, setFile] = useState(null);
